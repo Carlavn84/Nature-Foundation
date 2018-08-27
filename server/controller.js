@@ -3,6 +3,8 @@ var {check, validationResult} = require('express-validator/check');
 const bcrypt = require('bcrypt');
 const User = require('./models/User');
 const Post = require('./models/Post');
+const adminController = require("./admin");
+const Admin = require("../models/Admin");
 
 module.exports = function(app){
   const regValidation = [
@@ -170,3 +172,6 @@ function showPosts(req, res) {
   });
 
 };
+
+
+
