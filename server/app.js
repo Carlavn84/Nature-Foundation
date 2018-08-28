@@ -10,6 +10,13 @@ const app = express();
 app.use(bodyparser.json());
 mongoose.connect("mongodb://kosay:kosay88@ds235302.mlab.com:35302/challenge");
 
+//this is for uploading photo
+var upload = multer({ storage: storage });
+
+app.use('/uploads', express.static('uploads'))
+
+
+
 // Cors:
 app.use(
   cors({
