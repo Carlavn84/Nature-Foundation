@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 
 
 
-class Login extends Component {
+class AdminLogin extends Component {
 
     constructor(props) {
         super(props);
@@ -71,5 +71,5 @@ class Login extends Component {
     }
 }
     
-    export default Login;
+    export default AdminLogin;
 
