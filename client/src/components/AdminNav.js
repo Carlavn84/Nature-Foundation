@@ -35,7 +35,7 @@ class AdminNav extends Component {
 
     componentDidMount() {
 
-        axios.get('http://localhost:8000/api/isloggedin')
+        axios.get('http://localhost:8000/api/admin/isloggedin')
             .then((res) => {
                 if (res.data.error) {
                     this.setState({ loading: false })

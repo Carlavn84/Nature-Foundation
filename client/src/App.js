@@ -8,6 +8,7 @@ import Login from './components/Login';
 import Register from './components/AdminRegister';
 import AdminNav from './components/AdminNav';
 import AdminLogin from './components/AdminLogin';
+import DashboardArea from './components/AdminDashboardArea';
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
           <Route path="/Login" component={Login}/>
           <Route path='/Admin-panel/Register' component={Register} />
           <Route path='/Adminwsq' component={AdminLogin} />
+          <Route path='/Admin-panel/DashboardAreas' component={DashboardArea} />
 
 
         </Switch>

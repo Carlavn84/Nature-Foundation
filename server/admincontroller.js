@@ -11,9 +11,6 @@ const multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
 var express = require('express');
 
-
-//To get all adminS
-/Admin login////////////////////////////
 module.exports = function(app){
     var registerAdmin = (req, res) => {
         const admin = new Admin(req.body);
@@ -50,10 +47,6 @@ module.exports = function(app){
             check("email", "email already exist").custom(function (value) {
                 return Admin.findOne({ email: value }).then(Admin => !Admin);
             }),
-            // check("jobTitle", "please enter your full description")
-            //   .not()
-            //   .isEmpty(),
-            // check("jobTitle", "your description must not contain any numbers").isAlpha(),
             check(
                 "password",
                 "your password should be 5 or more characters"
@@ -64,23 +57,6 @@ module.exports = function(app){
         ],
         registerAdmin
     );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -126,14 +102,14 @@ app.post('/api/admin/login', logValidation, login);
 
 
 // Login checker
-isLoggedIn = (req, res, next) => {
+AdminisLoggedIn = (req, res, next) => {
     if (req.session.admin) {
         res.status(200).json(req.session.admin);
     } else {
         res.send(false);
     }
 }
-app.get("/api/isloggedin", isLoggedIn);
+app.get("/api/admin/isloggedin", AdminisLoggedIn);
 
 
 ///////////Session for current admin/////////////////////////////////////////////////////
