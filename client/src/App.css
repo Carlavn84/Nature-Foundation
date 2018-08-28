@@ -1,4 +1,9 @@
+.map {
+  position: unset;
+  width: 50%;
+}
 .login {
+  position: absolute;
   width: 50%;
   margin-left: 50%;
   padding: 100px;

@@ -115,10 +115,18 @@ app.get("/api/isloggedin", isLoggedIn);
 
 // ------------Post:-----------
   const postValidation = [
-    check("post")
+    check("size")
       .not()
       .isEmpty()
-      .withMessage("Please write something.")
+      .withMessage("Please write something."),
+    check("lat")
+      .not()
+      .isEmpty()
+      .withMessage("Please write something."),
+    check("lng")
+      .not()
+      .isEmpty()
+      .withMessage("Please write something."),
   ];
 
   function addPost(req, res) {
@@ -154,10 +162,11 @@ app.post("/api/postupvote/:id", (req, res) => {
  });
 
 // -------------show Posts:------------
-function showPosts(req, res) {
+
+   function showPosts(req, res) {
     Post.find()
-      .populate("user", ["username", "email"])
-      .sort({ vote: "desc" })
+      .populate("user", ["name", "email"])
+      .sort({ createdAt: "desc" })
       .then(post => {
         res.json(post);
       })
@@ -165,8 +174,8 @@ function showPosts(req, res) {
         res.json(error);
       });
   }
-  app.get("/api/showposts", showPosts);
 
+  app.get("/api/showposts", showPosts);
   app.get("/api/logout", (req, res) => {
     req.session.destroy();
     res.send({ message: "Logged out!" });
