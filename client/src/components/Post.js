@@ -11,7 +11,6 @@ class Post extends Component {
     // console.log();
     return(
       <div>
-      
         <ul>
           <li>size: {post.size}</li>
           <li>lat: {post.lat}</li>

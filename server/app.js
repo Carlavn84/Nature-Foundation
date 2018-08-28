@@ -4,6 +4,8 @@ const bodyparser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
 const controller = require('./controller');
+const multer = require('multer');
+// const storage = require('storage');
 
 const app = express();
 
