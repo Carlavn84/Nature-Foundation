@@ -20,8 +20,11 @@ class App extends Component {
           <Route path="/Map" component={MapContainer}/>
           <Route path="/Login" component={Login}/>
           <Route path='/Admin-panel/Register' component={Register} />
-          <Route path='/Adminwsq' component={AdminLogin} />
+          <Route path='/Adminlogin' component={AdminLogin} />
           <Route path='/Admin-panel/DashboardAreas' component={DashboardArea} />
+          
+
+
 
 
         </Switch>

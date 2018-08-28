@@ -22,14 +22,14 @@ class DashboardArea extends Component {
   
     }
 
-    handleAddscore() {
-        window.location.href = '/admin/addscore';
-    }
+    // handleAddscore() {
+    //     window.location.href = '/admin/addscore';
+    // }
 
 
-    handleEdit(){
-        window.location.href='/admin/editdetails';
-    }
+    // handleEdit(){
+    //     window.location.href='/admin/editdetails';
+    // }
 
 
     componentDidMount() {
@@ -54,7 +54,7 @@ class DashboardArea extends Component {
             } else if (res.data.jobTitle === 'Admin' || res.data.jobTitle === 'SuperAdmin') {
                 this.setState({ admin: res.data, loading: false })
             } else {
-                window.location.href = "/adminwsq"
+                window.location.href = "/adminlogin"
             }
         });
     }
@@ -89,7 +89,7 @@ class DashboardArea extends Component {
                                         <td colSpan={3}>{area.lng}</td>
 
                                         <td><Link className="btn btn-primary" to={`/Admin-Panel/${area._id}/EditArticle`}>Upload photo</Link></td>
-                                        <td><Link className="btn btn-primary" to={`/${area._id}/SingleArticle`}>Bekijk details</Link></td>
+                                        {/* <td><Link className="btn btn-primary" to={`/${area._id}/SingleArticle`}>Bekijk details</Link></td> */}
                                     </tr>
                                 )
                             }.bind(this))}
@@ -98,6 +98,17 @@ class DashboardArea extends Component {
                     <br/>
                     <br/>
                 <br/>
+
+                <button className="btn btn-primary"
+          onClick={() =>
+           axios
+           .get("http://localhost:8000/api/admin/logout")
+           /*.then(res => this.setState({isloggedin: false}) )} */
+           .then(res => (window.location = "/adminlogin"))} //...or like this
+         >Log out</button >
+
+
+                
                 </div>
           
             </div>

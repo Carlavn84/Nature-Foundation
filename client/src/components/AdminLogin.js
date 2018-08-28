@@ -20,6 +20,18 @@ class AdminLogin extends Component {
     }
 
     
+    // componentWillMount() {
+    //     axios.get('http://localhost:8000/api/admin/isloggedin')
+    //     .then((res) => {
+    //         if (res.data.error) {
+    //             this.setState({ loading: false })
+    //         } else if (res.data.jobTitle === 'SuperAdmin' || res.data.jobTitle === 'Admin') {
+    //             this.setState({ admin: res.data, loading: false })
+    //         } else {
+    //             window.location.href = "/Admin-panel/DashboardArticle"
+    //         }
+    //     });
+    // }
     
       
     submitHandler(e){
@@ -28,7 +40,7 @@ class AdminLogin extends Component {
         if (res.data.err) {
         return  this.setState({err:res.data.message})
         } 
-        return this.props.history.push("/Admin-panel");
+        return this.props.history.push("/Admin-panel/DashboardArticle");
         });
     }
     
