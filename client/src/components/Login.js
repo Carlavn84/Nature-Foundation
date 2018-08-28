@@ -38,6 +38,7 @@ class Login extends Component {
 
   render() {
     return(
+      <div>
       <div className="login">
        {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.submitHandler}>
@@ -59,6 +60,7 @@ class Login extends Component {
           <br/>
           <button type="submit">Login</button>
         </form>
+      </div>
       </div>
         );
   }

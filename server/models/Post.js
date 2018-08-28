@@ -2,11 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
-  post: {
-    type: String,
+  size: {
+    type: Number,
+    default: 0,
     require: true
   },
-  vote: {
+  lat: {
+    type: Number,
+    default: 0,
+    require: true
+  },
+  lng: {
     type: Number,
     default: 0,
     require: true

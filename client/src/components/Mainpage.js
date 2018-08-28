@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Post from './Post';
+import Name from './Name';
 
 class Mainpage extends Component {
   constructor(props){
     super(props);
     this.state={
-      posts:null,
-      post:"",
+      name:"",
+      size:null,
+      lat:null,
+      lng:null,
       isloggedin:true
     };
 
-    this.getPosts();
+    this.getArea();
     axios
     .get("http://localhost:8000/api/isloggedin")
     .then(res => {
@@ -21,10 +24,10 @@ class Mainpage extends Component {
     })
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
-    this.getPosts = this.getPosts.bind(this);
+    this.getArea = this.getArea.bind(this);
   }
 
-  getPosts() {
+  getArea() {
     axios
     .get("http://localhost:8000/api/showposts")
     .then(posts => this.setState({posts: posts.data}));
@@ -36,7 +39,7 @@ class Mainpage extends Component {
     .post("http://localhost:8000/api/addpost", { post: this.state.post })
     .then(res => {
       this.setState({ post: "" });
-      this.getPosts();
+      this.getArea();
     });
   }
 
@@ -52,22 +55,15 @@ class Mainpage extends Component {
            axios
            .get("http://localhost:8000/api/logout")
            /*.then(res => this.setState({isloggedin: false}) )} */
-           .then(res => (window.location = "/"))} //...or like this 
-         >log out</button>
-        <form onSubmit={this.submitHandler}>
-          <input
-           value={this.state.post}
-           placeholder="post"
-           onChange={this.changeHandler}
-           type="text"
-           name="post"
-           id="post"
-           />
-          <button type="submit">submit</button>
-        </form>
+           .then(res => (window.location = "/"))} //...or like this
+         >log out</button >
+
+         {this.state.name}
+
+
         {this.state.posts &&
           this.state.posts.map(post=> {
-            return <Post getposts={this.getPosts} key={post._id} info={post}/>
+            return <Post getArea={this.getArea} key={post._id} info={post}/>
         })}
       </div>
     ) : (
