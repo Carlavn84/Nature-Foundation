@@ -15,6 +15,74 @@ var express = require('express');
 //To get all adminS
 /Admin login////////////////////////////
 module.exports = function(app){
+    var registerAdmin = (req, res) => {
+        const admin = new Admin(req.body);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.send({ status: "error", errors: errors.mapped() });
+        }
+        admin.jobTitle = "Admin";
+        admin.password = admin.hashPassword(admin.password);
+        admin
+            .save()
+            .then(admin => {
+                return res.send({ status: "success", message: "registerd successfuly" });
+            })
+            .catch(error => {
+                console.log(error);
+                return res.send({ status: "error", message: error });
+            });
+    };
+    
+    app.post("/api/admin/register",
+        [
+            check("name", "please enter your full name")
+                .not()
+                .isEmpty(),
+            check("name", "Your name can not contain any numbers").matches(
+                /^[A-z''., ]+$/i
+            ),
+            check("name", "Your name should be more than 4 characters").isLength({
+                min: 4
+            }),
+    
+            check("email", "your email is not valid").isEmail(),
+            check("email", "email already exist").custom(function (value) {
+                return Admin.findOne({ email: value }).then(Admin => !Admin);
+            }),
+            // check("jobTitle", "please enter your full description")
+            //   .not()
+            //   .isEmpty(),
+            // check("jobTitle", "your description must not contain any numbers").isAlpha(),
+            check(
+                "password",
+                "your password should be 5 or more characters"
+            ).isLength({ min: 5 }),
+            check("con_password", "your password confirmation dose not match").custom(
+                (value, { req }) => value === req.body.password
+            )
+        ],
+        registerAdmin
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const logValidation = [
     check("email")
