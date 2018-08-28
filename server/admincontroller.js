@@ -1,112 +1,145 @@
-const { check, validationResult } = require("express-validator/check");
+const bodyparser = require('body-parser');
+var {check, validationResult} = require('express-validator/check');
+const bcrypt = require('bcrypt');
+// const User = require('./models/User');
+// const Post = require('./models/Post');
+const adminController = require("./admincontroller");
+const Admin = require('./models/Admin');
+const ForestArea = require('./models/ForestArea');
+const multer = require('multer');
+// var Upload = require('upload-file');
+var upload = multer({ dest: 'uploads/' });
+var express = require('express');
+
+
 //To get all adminS
-function adminController(router,auth) {
-  var validation = [
-    check("username")
-      .not()
-      .isEmpty()
-      .withMessage("Username is required!")
-      .isLength({ min: 2 })
-      .withMessage("Username should be at least 4 letters"),
+/Admin login////////////////////////////
+module.exports = function(app){
+
+const logValidation = [
+    check("email")
+        .not()
+        .isEmpty()
+        .withMessage("Email is required"),
     check("password")
-      .not()
-      .isEmpty()
-      .withMessage("Password can not be empty!")
-      .isLength({ min: 8 })
-      .withMessage("Password should be at least 8 letters")
-  ];
-  var logvalidation = [
-    check("username")
-      .not()
-      .isEmpty()
-      .withMessage("Username is required!"),
-    check("password")
-      .not()
-      .isEmpty()
-      .withMessage("Password can not be empty!")
-  ];
-  router.post("/adminlogin", logvalidation, (req, res) => {
+        .not()
+        .isEmpty()
+        .withMessage("Password is required")
+];
+
+var login = (req, res) => {
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).send({ errors: errors.mapped() });
+        return res.send({ err: errors.mapped() });
     }
-    Admin.findOne({
-      email: req.body.email,
-      password: req.body.password
-    })
-      .then(function(admin) {
+    Admin.findOne({ 
+        email: req.body.email
+    }).then(function (admin) {
+        // if user name or password is wrong
         if (!admin) {
-          return res.status(401).send({
-            errors: {
-              logError: "Wrong email or password!"
-            }
-          });
-        } else {
-          req.session.admin = admin;
-          req.session.isLoggedIn = true;
-          req.session.couponCode = true;
-          return res.send({ message: "You are signed in" });
+            return res.json({ err: true, message: 'Wrong credential' })
+        }
+        if (!admin.comparePassword(req.body.password, admin.password)) {
+            return res.send({ err: true, message: "Wrong password!" });
         }
 
-        res.send(admin);
-      })
-      .catch(function(error) {
+        //user is found
+        console.log('before cookie');
+        req.session.admin = admin;
+        req.session.save();
+        res.status(200).json(admin);
+    }).catch(error => {
         console.log(error);
-      });
-  });
-
-
-
-  //@To create admin
-  router.post("/addadmin",auth, validation, (req, res) => {
-    var errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).send({ errors: errors.mapped() });
-    }
-    var admin = new Admin(req.body);
-    admin
-      .save()
-      .then(savedadmin => {
-        res.json(savedadmin);
-      })
-      .catch(err => {
-        res.status(400).send(err);
-      });
-  });
-
-//to get all adminss 
-router.get("/alladmins",auth, (req, res) => {
-  Admin.find()
-    .then(admins => {
-      res.json(admins);
+        return res.status(422).json({ status: 'error', message: error })
     })
-    .catch(err => {
-      res.status(404).json(err);
-    });
-});
-  //@To delete adminS
-  router.delete("/deleteadmin/:id",auth, (req, res) => {
-    Admin
-      .findByIdAndRemove(req.params.id)
-      .then(result => {
-        res.send(result);
-      })
-      .catch(err => res.send(err));
-  });
-
-  //@to check if user logged in or not
-  router.get('/isloggedin',auth,(req,res)=>{
-    if (req.session.isLoggedIn) {
-      res.send({isloggedin:true})
-    }else{
-      res.status(401).send({isloggedin:false})
-    }
-  })
-
-  //@to logout
-  router.get("/logout", function(req, res) {
-    req.session.destroy();
-    res.send({ message: "session destroyed" });
-  });
 }
-module.exports = adminController;
+
+app.post('/api/admin/login', logValidation, login);
+
+
+// Login checker
+isLoggedIn = (req, res, next) => {
+    if (req.session.admin) {
+        res.status(200).json(req.session.admin);
+    } else {
+        res.send(false);
+    }
+}
+app.get("/api/isloggedin", isLoggedIn);
+
+
+///////////Session for current admin/////////////////////////////////////////////////////
+app.get('/api/current_Admin', function (req, res) {
+  if (req.session.admin) {
+    Admin.findById(req.session.admin._id)
+      .then(function (admin) {
+        res.send({
+          _id: admin._id,
+          email: admin.email,
+          firstName: admin.firstName,
+        }).populate(admin)
+      })
+  } else {
+    res.send({ error: 'not logged in' })
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////////////
+///Log Out
+app.get('/api/admin/logout', function (req, res) {
+  req.session.destroy();
+  res.send({ message: 'session destroyed' })
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//Adding article and Validation
+
+app.post('/api/Article/register',
+    upload.fields([{ name: 'photo', maxCount: 1 }]), //multer files upload
+    [
+        check('title').not().isEmpty().withMessage('Title is required')
+            .isLength({ min: 2 }).withMessage('Title should be at least 2 letters'),
+        check('location')
+            .not().isEmpty().withMessage('Location is required')
+            .isLength({ min: 2 }).withMessage('Location should be at least 2 letters'),
+        check('shortDescription')
+            .not().isEmpty().withMessage('Description is required').isLength({ min: 10 }).withMessage('Minimum 10 characters are required'),
+    ],
+    function (req, res) {
+        var errors = validationResult(req);
+        console.log(errors.mapped());
+        if (!errors.isEmpty()) {
+            return res.send({ errors: errors.mapped() });
+        }
+
+        filename = null
+        if (req.files && req.files.photo && req.files.photo[0]) {
+            filename = req.files.photo[0].filename
+        }
+
+        Article.create({
+            title: req.body.title,
+            location: req.body.location,
+            Video: req.body.Video,
+            profilePic: filename,
+            ShortDescription: req.body.shortDescription,
+
+        }).then(res.send(Article))
+            .catch(function (error) {
+                console.log(error);
+                res.send(error);
+            })
+    }
+)
+
+
+
+
+
+
+
+
+
+
+
+}

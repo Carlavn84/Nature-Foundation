@@ -4,11 +4,25 @@ const bodyparser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
 const controller = require('./controller');
+const multer = require('multer');
+const admincontroller = require('./admincontroller');
 
 const app = express();
 
 app.use(bodyparser.json());
-mongoose.connect("mongodb://kosay:kosay88@ds235302.mlab.com:35302/challenge");
+mongoose.connect("mongodb://kosay:kosay88@ds235302.mlab.com:35302/challenge",  { useNewUrlParser: true });
+
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.resolve(__dirname, 'uploads'))
+  },
+  filename: function (req, file, cb) {
+    const extension = mime.extension(file.mimetype);
+    const filename = randomstring.generate();
+    cb(null, filename + '.' + extension)
+  }
+})
 
 //this is for uploading photo
 var upload = multer({ storage: storage });
@@ -39,5 +53,7 @@ app.use(
   })
 );
 controller(app);
+
+admincontroller(app);
 
 app.listen(8000, () => console.log('Listening... port8000'));
