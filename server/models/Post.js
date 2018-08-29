@@ -17,6 +17,10 @@ var PostSchema = new Schema({
     default: 0,
     require: true
   },
+  imgUrl:{
+    type: String,
+    require: true
+  },
   user: {
     type: Schema.Types.ObjectId,
     required: true,
