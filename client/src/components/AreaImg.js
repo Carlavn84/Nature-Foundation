@@ -3,10 +3,13 @@ import axios from 'axios';
 import Post from './Post';
 import MapContainer from './Map';
 
-class Mainpage extends Component {
+class AreaImg extends Component {
+
   constructor(props){
+// console.log(props);
     super(props);
     this.state={
+      info:"",
       name:"",
       size:null,
       lat:null,
@@ -14,7 +17,8 @@ class Mainpage extends Component {
       isloggedin:true
     };
 
-    this.getArea();
+    this.getOne()
+
     axios
     .get("http://localhost:8000/api/isloggedin")
     .then(res => {
@@ -23,32 +27,29 @@ class Mainpage extends Component {
       }
     })
     this.changeHandler = this.changeHandler.bind(this);
-    this.submitHandler = this.submitHandler.bind(this);
-    this.getArea = this.getArea.bind(this);
+    this.getOne = this.getOne.bind(this);
   }
 
-  getArea() {
+  componentDidMount(){
     axios
     .get("http://localhost:8000/api/showposts")
     .then(posts => this.setState({posts: posts.data}));
   }
-
-  submitHandler(e){
-    e.preventDefault();
-    axios
-    .post("http://localhost:8000/api/addpost", { post: this.state.post })
-    .then(res => {
-      this.setState({ post: "" });
-      this.getArea();
-    });
+  getArea() {
   }
 
+  getOne() {
+    axios
+    .get("http://localhost:8000/api/showOne/" + this.props.match.params.id)
+    .then(info => this.setState({info: info.data}));
+  }
   changeHandler(e){
     this.setState({ post: e.target.value });
   }
 
   render() {
-    return this.state.isloggedin ? (
+    var data = this.state.info;
+     return this.state.isloggedin ? (
       <div>
       <div>
       <MapContainer />
@@ -63,21 +64,23 @@ class Mainpage extends Component {
            .then(res => (window.location = "/"))} //...or like this
          >log out</button >
          <hr/>
-
-        {this.state.posts && this.state.posts.map(post=> {
+        {this.state.posts &&
+          this.state.posts.map((post, i)=> {
             let userName= " ";
             if (this.name !== post.user.name){
               this.name = post.user.name;
-              userName = "Hello " + this.name;
+              userName = "protector: " + this.name;
             }
-            return (
-              <div key={post._id}>
-              <h4>{userName}</h4>
-              <Post getArea={this.getArea} key={post._id} info={post}/>
 
-              </div>
+            return (
+                <div key={i}>
+                <h4>{userName}</h4>
+                </div>
             )
         })}
+        <h4>lat:{data.lng}</h4>
+        <h4>lng:{data.lat}</h4>
+        <h4>size:{data.size}</h4>
       </div>
       </div>
     ) : (
@@ -85,4 +88,4 @@ class Mainpage extends Component {
     );
   }
 }
-export default Mainpage;
+export default AreaImg;

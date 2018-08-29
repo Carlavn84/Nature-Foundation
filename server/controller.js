@@ -3,6 +3,9 @@ var {check, validationResult} = require('express-validator/check');
 const bcrypt = require('bcrypt');
 const User = require('./models/User');
 const Post = require('./models/Post');
+const adminController = require("./admincontroller");
+const Admin = require('./models/Admin');
+const multer = require('multer');
 
 module.exports = function(app){
   const regValidation = [
@@ -177,5 +180,41 @@ app.post("/api/postupvote/:id", (req, res) => {
     req.session.destroy();
     res.send({ message: "Logged out!" });
   });
+
+// -------------show lat & lng opject:------------
+
+   function showArea(req, res) {
+    Post.find()
+      .then(post => {
+        res.json(post.map(req => {
+          return ({lat: req.lat, lng: req.lng})
+        }));
+      })
+      .catch(error => {
+        res.json(error);
+      });
+  }
+
+  app.get("/api/showarea", showArea);
+  app.get("/api/logout", (req, res) => {
+    req.session.destroy();
+    res.send({ message: "Logged out!" });
+  });
+
+  // ----------------Show one----------------
+
+     function showOne(req, res) {
+      Post.findById({_id:req.params.id})
+        .populate("post", ["size", "lat", "lng", "createdAt"])
+        .sort({ createdAt: "desc" })
+        .then(post => {
+          res.json(post);
+        })
+        .catch(error => {
+          res.json(error);
+        });
+    }
+
+    app.get("/api/showOne/:id", showOne);
 
 };
