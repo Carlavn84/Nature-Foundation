@@ -9,6 +9,7 @@ import Register from './components/AdminRegister';
 import AdminNav from './components/AdminNav';
 import AdminLogin from './components/AdminLogin';
 import DashboardArea from './components/AdminDashboardArea';
+import AddPhoto from './components/AddPhoto';
 
 class App extends Component {
   render() {
@@ -22,7 +23,7 @@ class App extends Component {
           <Route path='/Admin-panel/Register' component={Register} />
           <Route path='/Adminlogin' component={AdminLogin} />
           <Route path='/Admin-panel/DashboardAreas' component={DashboardArea} />
-          
+          <Route path='/Addphoto' component={AddPhoto} />
 
 
 

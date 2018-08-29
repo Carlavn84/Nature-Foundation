@@ -6,6 +6,9 @@ const cors = require('cors');
 const controller = require('./controller');
 const multer = require('multer');
 const admincontroller = require('./admincontroller');
+const path = require('path');
+const mime = require('mime-types');
+
 
 const app = express();
 
@@ -19,7 +22,9 @@ var storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const extension = mime.extension(file.mimetype);
-    const filename = randomstring.generate();
+    console.log(extension)
+    // const filename = randomstring.generate();
+    const filename = file.originalname + "-" + Date.now().toString();
     cb(null, filename + '.' + extension)
   }
 })

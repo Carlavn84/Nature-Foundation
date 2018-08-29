@@ -17,7 +17,7 @@ var PostSchema = new Schema({
     default: 0,
     require: true
   },
-  photo:{
+  imgUrl:{
     type: String,
     require: true
   },

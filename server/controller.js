@@ -3,6 +3,7 @@ var {check, validationResult} = require('express-validator/check');
 const bcrypt = require('bcrypt');
 const User = require('./models/User');
 const Post = require('./models/Post');
+const PicArea = require('./models/PicArea');
 const adminController = require("./admincontroller");
 const Admin = require('./models/Admin');
 const multer = require('multer');
@@ -174,6 +175,28 @@ app.post("/api/postupvote/:id", (req, res) => {
         res.json(error);
       });
   }
+
+  // check auth
+  var auth = (req, res, next) => {
+      if (req.session.admin) {
+        Admin.findOne({
+          email: req.session.admin.email,
+          password: req.session.admin.password
+        }).then(function(admin) {
+            if (!admin) {
+              return res.status(401).json({ errors: "Not authorized!" });
+            } else {
+              return next();
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        return res.status(401).send({ errors: "Not authorized!" });
+      }
+    };
+
 
   app.get("/api/showposts", showPosts);
   app.get("/api/logout", (req, res) => {

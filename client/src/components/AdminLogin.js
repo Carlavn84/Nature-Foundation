@@ -34,13 +34,13 @@ class AdminLogin extends Component {
     // }
     
       
-    submitHandler(e){
+    submitHandler= (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/api/admin/login", this.state.data).then((res)=>{
         if (res.data.err) {
         return  this.setState({err:res.data.message})
         } 
-        return this.props.history.push("/Admin-panel/DashboardArticle");
+        window.location.href="/Admin-panel/DashboardAreas";
         });
     }
     

@@ -18,7 +18,7 @@ class DashboardArea extends Component {
             }
         }
 
-        this.componentDidMount = this.componentDidMount.bind(this);
+        
   
     }
 
@@ -32,7 +32,8 @@ class DashboardArea extends Component {
     // }
 
 
-    componentDidMount() {
+    componentDidMount=(e) => {
+        // e.preventDefault();
         axios.get("http://localhost:8000/api/showposts")
         .then((response) => {
 
@@ -60,7 +61,7 @@ class DashboardArea extends Component {
     }
 
     render() {
-        return (
+        return this.state.areas ?(
             <div>
                 {/* <AdminNav /> */}
                 <h1>ALL AREAS INFORMATION</h1>
@@ -88,7 +89,7 @@ class DashboardArea extends Component {
                                         <td colSpan={1}>{area.lat}</td>
                                         <td colSpan={3}>{area.lng}</td>
 
-                                        <td><Link className="btn btn-primary" to={`/Admin-Panel/${area._id}/EditArticle`}>Upload photo</Link></td>
+                                        <td><Link className="btn btn-primary" to={`/Addphoto/${area._id}`}>Upload photo</Link></td>
                                         {/* <td><Link className="btn btn-primary" to={`/${area._id}/SingleArticle`}>Bekijk details</Link></td> */}
                                     </tr>
                                 )
@@ -112,8 +113,10 @@ class DashboardArea extends Component {
                 </div>
           
             </div>
-         
-        )
+        ):(
+            <h1>Loading...</h1>
+        ) ;
+        
 
     }
 }
