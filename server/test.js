@@ -108,3 +108,7 @@
     //     var upload = multer({ storage: storage })
     
     
+    <Route path='/Admin-panel/Register' component={Register} />
+          <Route path='/Adminlogin' component={AdminLogin} />
+          <Route path='/Admin-panel/DashboardAreas' component={DashboardArea} />
+          <Route path='/Addphoto' component={AddPhoto} />
