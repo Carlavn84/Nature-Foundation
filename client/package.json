@@ -19,16 +19,16 @@
     "moment": "^2.22.1",
     "mongoose": "^5.0.16",
     "params": "^0.1.1",
-    "react": "^16.3.2",
+
     "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.3.2",
+
     "react-load-script": "0.0.6",
     "react-moment": "^0.7.0",
     "react-responsive-carousel": "^3.1.39",
     "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
+
     "react-router-redux": "^4.0.8",
-    "react-scripts": "1.1.4",
+
     "sweetalert2": "^7.21.0",
     "sweetalert2-react-content": "^1.0.0",
     "react-scripts": "1.1.4"
