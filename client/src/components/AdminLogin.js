@@ -19,43 +19,28 @@ class AdminLogin extends Component {
         this.submitHandler = this.submitHandler.bind(this);
     }
 
-    
-    // componentWillMount() {
-    //     axios.get('http://localhost:8000/api/admin/isloggedin')
-    //     .then((res) => {
-    //         if (res.data.error) {
-    //             this.setState({ loading: false })
-    //         } else if (res.data.jobTitle === 'SuperAdmin' || res.data.jobTitle === 'Admin') {
-    //             this.setState({ admin: res.data, loading: false })
-    //         } else {
-    //             window.location.href = "/Admin-panel/DashboardArticle"
-    //         }
-    //     });
-    // }
-    
-      
     submitHandler= (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/api/admin/login", this.state.data).then((res)=>{
         if (res.data.err) {
         return  this.setState({err:res.data.message})
-        } 
+        }
         window.location.href="/Admin-panel/DashboardAreas";
         });
     }
-    
-    
-      
+
+
+
     changeHandler(e){
         var formData = this.state.data;
         formData[e.target.name] = e.target.value;
         this.setState({
             data : formData
         })
-    
+
     }
-    
-      
+
+
     render() {
         var changeHandler= this.changeHandler;
         return (
@@ -64,7 +49,7 @@ class AdminLogin extends Component {
             <br />
             <br />
             <br />
-         
+
                 <h1>Inloggen</h1>
                 {this.state.err && <h3>{this.state.err}</h3> }
                 <form onSubmit={this.submitHandler}>
@@ -82,6 +67,5 @@ class AdminLogin extends Component {
         )
     }
 }
-    
-    export default AdminLogin;
 
+    export default AdminLogin;

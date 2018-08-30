@@ -17,7 +17,7 @@
 // })
 //     .then(function(test) {
 //     console.log("Pic is uploaded")
-//     res.send(tes);
+//     res.send(tes);g
 // })
 
         // // var area = new PicArea(req.body);
@@ -108,7 +108,4 @@
     //     var upload = multer({ storage: storage })
     
     
-    <Route path='/Admin-panel/Register' component={Register} />
-          <Route path='/Adminlogin' component={AdminLogin} />
-          <Route path='/Admin-panel/DashboardAreas' component={DashboardArea} />
-          <Route path='/Addphoto' component={AddPhoto} />
+    
