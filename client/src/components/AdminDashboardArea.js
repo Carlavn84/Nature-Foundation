@@ -12,28 +12,14 @@ class DashboardArea extends Component {
         this.state = {
             areas: null,
             loading: true,
-            PostClass: null, 
+            PostClass: null,
             admin:{
 
             }
         }
-
-        
-  
     }
 
-    // handleAddscore() {
-    //     window.location.href = '/admin/addscore';
-    // }
-
-
-    // handleEdit(){
-    //     window.location.href='/admin/editdetails';
-    // }
-
-
     componentDidMount=(e) => {
-        // e.preventDefault();
         axios.get("http://localhost:8000/api/showposts")
         .then((response) => {
 
@@ -47,7 +33,7 @@ class DashboardArea extends Component {
             console.log(error)
         })
 
-        
+
         axios.get('http://localhost:8000/api/admin/isloggedin')
         .then((res) => {
             if (res.data.error) {
@@ -83,9 +69,9 @@ class DashboardArea extends Component {
                                 console.log(area);
                                 return (
                                     <tr key={area._id}>
-                                       
-                                        <td colSpan={1}>{area.size}</td>                                                                           
-                                        
+
+                                        <td colSpan={1}>{area.size}</td>
+
                                         <td colSpan={1}>{area.lat}</td>
                                         <td colSpan={3}>{area.lng}</td>
 
@@ -109,19 +95,15 @@ class DashboardArea extends Component {
          >Log out</button >
 
 
-                
+
                 </div>
-          
+
             </div>
         ):(
             <h1>Loading...</h1>
         ) ;
-        
+
 
     }
 }
 export default DashboardArea;
-
-
-
-

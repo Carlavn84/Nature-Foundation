@@ -32,7 +32,6 @@ class Register extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this.componentDidMount = this.componentDidMount.bind(this);
     }
 
 
@@ -43,23 +42,6 @@ class Register extends Component {
             data: formData
         });
     }
-
-    // componentDidMount() {
-    //     axios.get('http://localhost:8000/api/isloggedin')
-    //     .then((res) => {
-    //         if (res.data.error) {
-    //             this.setState({ loading: false })
-    //         } else if (res.data.jobTitle === 'SuperAdmin') {
-    //             this.setState({ admin: res.data, loading: false })
-    //         } else if (res.data.jobTitle === 'Admin') {
-    //             window.location.href = "/Admin-panel/DashboardArticle"
-    //         } else {
-    //             window.location.href = "/adminwsq"
-    //         }
-    //     });
-    // }
-    
-
 
     handleSubmit(event) {
         event.preventDefault();
@@ -150,7 +132,7 @@ class Register extends Component {
                         />
                         <p className="text-danger">{this.state.error.email}</p>
                     </div>
-                   
+
 
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Passwoord</label>
