@@ -16,6 +16,7 @@ class App extends Component {
           <Route path="/mainpage" component={Main} />
           <Route path="/Login" component={Login}/>
           <Route path="/AreaImg/:id" component={AreaImg}/>
+          
         </Switch>
       </Router>
     );
