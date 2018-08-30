@@ -21,7 +21,6 @@ class App extends Component {
           <Route path="/mainpage" component={Main} />
           <Route path="/Login" component={Login}/>
           <Route path="/AreaImg/:id" component={AreaImg}/>
-
           <Route path='/Admin-panel/Register' component={Register} />
           <Route path='/Adminlogin' component={AdminLogin} />
           <Route path='/Admin-panel/DashboardAreas' component={DashboardArea} />
